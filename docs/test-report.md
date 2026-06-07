@@ -33,6 +33,7 @@ Result:
 Tool:
 
 - Playwright browser runner loaded `file:///D:/code/projects/mobileapp/gooddeed/prototype/index.html`.
+- Automated Playwright tests in `tests/browser/foobow.pa.spec.mjs`.
 
 Validated:
 
@@ -50,9 +51,10 @@ Validated:
 - Dark mode toggles.
 - Language toggle sets `html.lang = zh-Hans`.
 - Prototype state persists to `localStorage`.
+- `npm run test:browser` passed 4/4 checks across mobile Chromium and desktop Chromium.
 
 Known Limits:
 
-- Browser PA is currently manual via Playwright runner, not yet automated in CI.
+- Browser PA is now automated with Playwright in `tests/browser/foobow.pa.spec.mjs`.
+- In the local Codex sandbox, Playwright CLI needs escalated execution because Node cannot `lstat` `C:\Users\crane` inside the restricted filesystem sandbox. GitHub Actions should run normally through the CI workflow.
 - Full visual regression, contrast measurement, and keyboard traversal are still future checks.
-

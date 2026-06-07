@@ -18,7 +18,8 @@ Move Foobow from a product concept into a disciplined MVP project with docs, tas
 - Unit checks: static content and object coverage in docs/prototype.
 - Smoke checks: prototype JavaScript syntax and static HTTP serving.
 - PA checks: baseline accessibility, privacy, safety, and donation wording.
-- Future gates: browser interaction tests, visual regression checks, backend contract tests, migration tests, security checks.
+- Browser PA checks: Playwright validates mobile/desktop core flows.
+- Future gates: visual regression checks, backend contract tests, migration tests, security checks.
 
 ## Sub-Agent Assignment Model
 
@@ -80,4 +81,3 @@ Move Foobow from a product concept into a disciplined MVP project with docs, tas
 - Tests cover the slice.
 - CI passes locally and in GitHub Actions.
 - No donation or karma copy implies users can buy luck, virtue, forgiveness, or guaranteed karma.
-

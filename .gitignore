@@ -7,3 +7,5 @@ Thumbs.db
 server.err.log
 server.out.log
 foobow-mobile-pa.png
+test-results/
+playwright-report/

@@ -13,6 +13,7 @@ This file is the project-local memory. Keep it current whenever product directio
 - Added prototype hardening: structured sample data module, local persistence, export/delete controls, blessing report actions, focus states, reduced-motion handling, and object-level acceptance criteria.
 - Verified prototype with real Playwright browser runner loaded from `file:///D:/code/projects/mobileapp/gooddeed/prototype/index.html`; mood, deed, map, blessing, report, profile, donation, theme, language, and localStorage persistence flows passed.
 - Hardened database/API planning with primary key guidance, relationships, indexes, privacy retention, migration strategy, API base path, cursor pagination, error shape, rate limits, donation idempotency, and payment webhook flow.
+- Added `@playwright/test`, browser PA tests for mobile/desktop core prototype flows, and a CI stage that installs Chromium and runs `npm run test:browser`.
 
 ## Working Principles
 
