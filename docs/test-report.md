@@ -28,6 +28,31 @@ Result:
 
 - Both JavaScript files passed syntax validation.
 
+Mobile app check:
+
+```text
+npm run test:mobile
+```
+
+Result:
+
+- Expo TypeScript app shell passed `tsc --noEmit`.
+- Local execution needed sandbox escalation for the same Node profile-path restriction that affects Playwright.
+
+Security audit:
+
+```text
+npm audit --audit-level=high
+npm --prefix apps/mobile audit --audit-level=high
+```
+
+Result:
+
+- Root audit found 0 vulnerabilities.
+- Mobile high/critical audit passed.
+- Mobile audit still reports 10 moderate Expo-template transitive advisories through `uuid`/Expo config tooling; the suggested force fix would downgrade Expo and is not safe for the SDK 56 scaffold.
+- After adding the convenience `test:security` script and CI audit step, local rerun was blocked by Codex escalation usage limits. The underlying individual audit commands had already passed at the high/critical threshold.
+
 ### Browser PA Pass
 
 Tool:
@@ -58,4 +83,5 @@ Known Limits:
 
 - Browser PA is now automated with Playwright in `tests/browser/foobow.pa.spec.mjs`.
 - In the local Codex sandbox, Playwright CLI needs escalated execution because Node cannot `lstat` `C:\Users\crane` inside the restricted filesystem sandbox. GitHub Actions should run normally through the CI workflow.
+- On 2026-06-06, further escalated reruns were blocked by Codex usage limits after the latest docs/script updates.
 - Full visual regression remains future work.

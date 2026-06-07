@@ -16,13 +16,22 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20.19.4
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run unit, smoke, and PA checks
         run: npm test
+
+      - name: Install mobile dependencies
+        run: npm --prefix apps/mobile ci
+
+      - name: Run mobile typecheck
+        run: npm run test:mobile
+
+      - name: Run high severity audit gates
+        run: npm run test:security
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium

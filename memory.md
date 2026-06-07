@@ -15,6 +15,11 @@ This file is the project-local memory. Keep it current whenever product directio
 - Hardened database/API planning with primary key guidance, relationships, indexes, privacy retention, migration strategy, API base path, cursor pagination, error shape, rate limits, donation idempotency, and payment webhook flow.
 - Added `@playwright/test`, browser PA tests for mobile/desktop core prototype flows, and a CI stage that installs Chromium and runs `npm run test:browser`.
 - Added category filters for map spots and deed catalog, keyboard-accessible deed selection, and automated Playwright checks for filters, keyboard traversal, keyboard activation, and WCAG 4.5:1 core token contrast.
+- Accepted ADR 001: use Expo + React Native + TypeScript for the MVP mobile app scaffold under `apps/mobile`.
+- Scaffolded Expo SDK 56 / React Native 0.85 / TypeScript app in `apps/mobile`, removed generated nested `.git`, ported Foobow core flows into `App.tsx`, added typed sample data, and added `npm run test:mobile` typecheck.
+- Local scaffold warning: Expo SDK 56 dependencies expect Node `^20.19.4 || ^22.13.0 || ^24.3.0 || >=25.0.0`; current local Node is `20.17.0`.
+- Added root and mobile high/critical audit scripts. Root audit found 0 vulnerabilities; mobile high/critical audit passed but has 10 moderate Expo-template transitive advisories where `npm audit fix --force` would downgrade Expo.
+- After adding final audit/CI convenience scripts, further escalated local reruns were blocked by Codex usage limits. `npm test` still passed 8/8 in the sandbox; prior escalated `npm run test:mobile`, `npm run test:browser`, and individual high audit commands passed before the final script/doc edits.
 
 ## Working Principles
 

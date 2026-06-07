@@ -19,6 +19,7 @@ Move Foobow from a product concept into a disciplined MVP project with docs, tas
 - Smoke checks: prototype JavaScript syntax and static HTTP serving.
 - PA checks: baseline accessibility, privacy, safety, and donation wording.
 - Browser PA checks: Playwright validates mobile/desktop core flows.
+- Security checks: high/critical npm audit gates run for root and mobile packages.
 - Future gates: visual regression checks, backend contract tests, migration tests, security checks.
 
 ## Sub-Agent Assignment Model
@@ -59,6 +60,7 @@ Move Foobow from a product concept into a disciplined MVP project with docs, tas
 - Move prototype screens into reusable components.
 - Add route/state management.
 - Add app-level test harness.
+- Current status: Expo/React Native shell exists under `apps/mobile` with a TypeScript typecheck gate.
 
 ### Milestone 4: Backend Readiness
 

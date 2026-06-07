@@ -23,6 +23,11 @@
 - Add Playwright browser PA tests and CI browser-test stage.
 - Add richer map/deed category filters.
 - Add automated keyboard traversal, deed keyboard activation, and design-token contrast PA checks.
+- Select Expo + React Native + TypeScript as the MVP mobile app stack.
+- Scaffold Expo mobile app under `apps/mobile`.
+- Port core Foobow flows into the Expo mobile shell.
+- Add mobile TypeScript typecheck gate.
+- Add high/critical dependency audit gates for root and mobile packages.
 
 ## In Progress
 
@@ -32,7 +37,9 @@
 ## Next
 
 - Add full visual regression checks.
-- Select production backend/app framework.
+- Select production backend framework.
+- Add route-based app structure once Expo Router is installed.
+- Monitor Expo SDK 56 moderate transitive audit advisories for safe upstream fixes.
 - Add browser-driven tests when local browser/server isolation is resolved.
 - Choose production app framework after prototype scope stabilizes.
 

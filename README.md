@@ -25,6 +25,23 @@ The prototype includes:
 - Anonymous blessing wall.
 - Profile, impact, badges, donation prompt, language toggle, and dark/light mode.
 
+## Mobile App
+
+The Expo/React Native MVP scaffold lives in:
+
+```text
+apps/mobile
+```
+
+Useful commands:
+
+```text
+npm --prefix apps/mobile run start
+npm run test:mobile
+```
+
+The mobile shell currently ports the prototype's core flows: Today, Map, Deeds, Community, Profile, category filters, symbolic karma, safe donation copy, privacy settings, and low-pressure blessing interactions.
+
 ## Product Direction
 
 Foobow should feel calm, premium, emotionally warm, and trustworthy. It should avoid casino-style gamification or claims that users can buy luck, virtue, or karma. Virtual actions provide symbolic comfort; verified donations and sponsored campaigns are clearly labeled as real-world impact.
@@ -41,6 +58,7 @@ Foobow should feel calm, premium, emotionally warm, and trustworthy. It should a
 - [Task Board](docs/task-board.md)
 - [Acceptance Criteria](docs/acceptance-criteria.md)
 - [Test Report](docs/test-report.md)
+- [ADR 001 Mobile Stack](docs/adr-001-mobile-stack.md)
 - [Memory](memory.md)
 
 ## Verification
@@ -56,3 +74,10 @@ The current test suite uses only built-in Node.js modules and covers:
 - Unit checks for required product components and documentation links.
 - Smoke checks for prototype JavaScript syntax and static HTTP serving.
 - PA checks for baseline accessibility, privacy, moderation, and donation safety wording.
+
+Additional gates:
+
+```text
+npm run test:mobile
+npm run test:browser
+```
