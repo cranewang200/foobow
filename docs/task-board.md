@@ -18,18 +18,18 @@
 - Add dependency-free unit, smoke, and PA checks.
 - Add local prototype persistence, structured sample data, export/delete controls, and report actions.
 - Add object-level acceptance criteria.
+- Run real browser PA pass for core prototype flows.
 
 ## In Progress
 
 - Push to `cranewang200/foobow.git`.
   - Blocker: current GitHub credential `regwang3713` received 403 for the target repo.
-- Browser-driven PA tests.
-  - Blocker: local browser/server isolation prevents reliable `localhost` verification in this environment.
 
 ## Next
 
 - Add richer map/deed category filters.
-- Add keyboard focus states and reduced-motion handling.
+- Automate browser-driven PA tests in CI once a test framework is selected.
+- Add full keyboard traversal and contrast checks.
 - Add browser-driven tests when local browser/server isolation is resolved.
 - Choose production app framework after prototype scope stabilizes.
 

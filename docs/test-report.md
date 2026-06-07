@@ -1,0 +1,58 @@
+# Foobow Test Report
+
+## 2026-06-06
+
+### Automated Checks
+
+Command:
+
+```text
+npm test
+```
+
+Result:
+
+- 7 tests passed.
+- Unit checks passed.
+- Smoke checks passed.
+- PA checklist checks passed.
+
+Additional syntax checks:
+
+```text
+node --check prototype/data.js
+node --check prototype/app.js
+```
+
+Result:
+
+- Both JavaScript files passed syntax validation.
+
+### Browser PA Pass
+
+Tool:
+
+- Playwright browser runner loaded `file:///D:/code/projects/mobileapp/gooddeed/prototype/index.html`.
+
+Validated:
+
+- Prototype title and Foobow heading render.
+- Mobile viewport `390x844` loads.
+- Mood check-in updates recommended deed.
+- Daily completion updates karma and streak state.
+- Map pin selection updates selected spot details.
+- Deed selection updates ritual preview.
+- Ritual action updates symbolic karma.
+- Blessing form creates a new blessing.
+- Blessing report action changes to reported/disabled state.
+- Profile screen exposes export and delete local data controls.
+- Donation dialog opens and includes safe wording that payment does not buy luck, virtue, or guaranteed karma.
+- Dark mode toggles.
+- Language toggle sets `html.lang = zh-Hans`.
+- Prototype state persists to `localStorage`.
+
+Known Limits:
+
+- Browser PA is currently manual via Playwright runner, not yet automated in CI.
+- Full visual regression, contrast measurement, and keyboard traversal are still future checks.
+
