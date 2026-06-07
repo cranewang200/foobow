@@ -51,10 +51,11 @@ Validated:
 - Dark mode toggles.
 - Language toggle sets `html.lang = zh-Hans`.
 - Prototype state persists to `localStorage`.
-- `npm run test:browser` passed 4/4 checks across mobile Chromium and desktop Chromium.
+- `npm run test:browser` passed 10/10 checks across mobile Chromium and desktop Chromium.
+- Added automated checks for map/deed category filters, keyboard traversal, keyboard deed-card activation, and WCAG 4.5:1 contrast on core design tokens.
 
 Known Limits:
 
 - Browser PA is now automated with Playwright in `tests/browser/foobow.pa.spec.mjs`.
 - In the local Codex sandbox, Playwright CLI needs escalated execution because Node cannot `lstat` `C:\Users\crane` inside the restricted filesystem sandbox. GitHub Actions should run normally through the CI workflow.
-- Full visual regression, contrast measurement, and keyboard traversal are still future checks.
+- Full visual regression remains future work.

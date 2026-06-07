@@ -60,3 +60,74 @@ test("theme, language, and local persistence work", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hans");
 });
 
+test("category filters narrow map spots and deed catalog", async ({ page }) => {
+  await page.getByRole("button", { name: "Map" }).click();
+  await page.locator("#mapLayerRow").getByRole("button", { name: "Elders" }).click();
+  await expect(page.locator("#spotName")).toHaveText("Toronto crosswalk");
+  await expect(page.getByLabel("East Lake good deed spot")).toBeHidden();
+  await expect(page.getByLabel("Toronto crosswalk good deed spot")).toBeVisible();
+
+  await page.getByRole("button", { name: "Deeds" }).click();
+  await expect(page.locator("#deedTypeCount")).toHaveText("1 shown");
+  await expect(page.getByRole("button", { name: /扶老奶奶过马路/ })).toBeVisible();
+
+  await page.locator("#deedCategoryRow").getByRole("button", { name: "All" }).click();
+  await expect(page.locator("#deedTypeCount")).toHaveText("4 shown");
+});
+
+test("keyboard users can reach controls and activate deed cards", async ({ page }) => {
+  const focusedNames = [];
+  for (let index = 0; index < 7; index += 1) {
+    await page.keyboard.press("Tab");
+    focusedNames.push(await page.evaluate(() => document.activeElement?.ariaLabel || document.activeElement?.textContent?.trim()));
+  }
+
+  expect(focusedNames).toContain("Switch language");
+  expect(focusedNames).toContain("Toggle dark mode");
+  expect(focusedNames).toContain("Calm");
+  expect(focusedNames).toContain("Heavy");
+
+  await page.getByRole("button", { name: "Deeds" }).click();
+  await page.getByRole("button", { name: /Clean a coastline/ }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#ritualTitle")).toHaveText("Clean a coastline");
+});
+
+test("core design tokens meet WCAG contrast thresholds", async ({ page }) => {
+  const ratios = await page.evaluate(() => {
+    const styles = getComputedStyle(document.documentElement);
+    const token = (name) => styles.getPropertyValue(name).trim();
+    const hexToRgb = (hex) => {
+      const normalized = hex.replace("#", "");
+      return [
+        Number.parseInt(normalized.slice(0, 2), 16) / 255,
+        Number.parseInt(normalized.slice(2, 4), 16) / 255,
+        Number.parseInt(normalized.slice(4, 6), 16) / 255
+      ];
+    };
+    const linear = (value) => value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    const luminance = (hex) => {
+      const [red, green, blue] = hexToRgb(hex).map(linear);
+      return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    };
+    const contrast = (foreground, background) => {
+      const first = luminance(foreground);
+      const second = luminance(background);
+      const lighter = Math.max(first, second);
+      const darker = Math.min(first, second);
+      return (lighter + 0.05) / (darker + 0.05);
+    };
+
+    return {
+      inkOnSurface: contrast(token("--ink"), token("--surface")),
+      mutedOnSurface: contrast(token("--muted"), token("--surface")),
+      tealOnSurface: contrast(token("--teal"), token("--surface")),
+      surfaceOnInk: contrast(token("--surface"), token("--ink")),
+      coralOnSurface: contrast(token("--coral"), token("--surface"))
+    };
+  });
+
+  for (const [name, ratio] of Object.entries(ratios)) {
+    expect.soft(ratio, `${name} contrast`).toBeGreaterThanOrEqual(4.5);
+  }
+});

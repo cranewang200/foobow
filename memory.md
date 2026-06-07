@@ -14,6 +14,7 @@ This file is the project-local memory. Keep it current whenever product directio
 - Verified prototype with real Playwright browser runner loaded from `file:///D:/code/projects/mobileapp/gooddeed/prototype/index.html`; mood, deed, map, blessing, report, profile, donation, theme, language, and localStorage persistence flows passed.
 - Hardened database/API planning with primary key guidance, relationships, indexes, privacy retention, migration strategy, API base path, cursor pagination, error shape, rate limits, donation idempotency, and payment webhook flow.
 - Added `@playwright/test`, browser PA tests for mobile/desktop core prototype flows, and a CI stage that installs Chromium and runs `npm run test:browser`.
+- Added category filters for map spots and deed catalog, keyboard-accessible deed selection, and automated Playwright checks for filters, keyboard traversal, keyboard activation, and WCAG 4.5:1 core token contrast.
 
 ## Working Principles
 

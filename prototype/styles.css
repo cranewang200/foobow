@@ -8,7 +8,7 @@
   --teal: #0f6c64;
   --blue: #315f94;
   --moss: #6c7b38;
-  --coral: #c85d44;
+  --coral: #9d3f30;
   --gold: #c69b3f;
   --shadow: 0 24px 60px rgba(52, 44, 31, 0.18);
   color-scheme: light;
@@ -410,6 +410,15 @@ textarea {
   border-radius: 999px;
   min-height: 36px;
   padding: 0 12px;
+}
+
+.deed-filter-row {
+  margin: 0 0 12px;
+}
+
+.map-pin.hidden,
+.deed-item.hidden {
+  display: none;
 }
 
 .deed-list {

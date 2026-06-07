@@ -29,6 +29,7 @@ This file turns the ODD objects into verifiable release criteria.
 ### Deed Type / Deed Action
 
 - User can browse deed types.
+- User can filter deed types by category.
 - User can select a deed and see a ritual preview.
 - User can perform a ritual and receive symbolic karma.
 - Deed content comes from structured sample data instead of being scattered across click handlers.
@@ -36,8 +37,16 @@ This file turns the ODD objects into verifiable release criteria.
 ### Map Spot
 
 - User can open map spots by location.
+- User can filter map spots by category.
 - Spot detail updates category, name, and description.
 - Pins expose accessible labels and selected state.
+
+### Accessibility
+
+- Main controls are reachable by keyboard.
+- Deed cards support keyboard activation.
+- Core foreground/background design-token pairs meet WCAG 2.x 4.5:1 contrast for normal text.
+- Reduced-motion users do not receive long-running animations.
 
 ### Blessing / Safety Report
 
@@ -58,4 +67,3 @@ This file turns the ODD objects into verifiable release criteria.
 - Anonymous community features can attract abuse; moderation must be present before open sharing.
 - Donation flows carry trust and compliance risk; verification, receipts, refunds, and idempotency are required before payments.
 - Map features can overpromise real-world impact; prototype and product copy must clearly label virtual versus verified actions.
-

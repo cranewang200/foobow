@@ -81,12 +81,7 @@
             <p class="eyebrow" id="spotCategory">Animal kindness</p>
             <h3 id="spotName">East Lake, Wuhan</h3>
             <p id="spotText">Release a digital fish into the lake and add one ripple to the shared kindness map.</p>
-            <div class="layer-row" aria-label="Map layers">
-              <button class="layer active" type="button">Animals</button>
-              <button class="layer" type="button">Elders</button>
-              <button class="layer" type="button">Nature</button>
-              <button class="layer" type="button">Blessings</button>
-            </div>
+            <div class="layer-row" id="mapLayerRow" aria-label="Map category filters"></div>
           </section>
         </section>
 
@@ -96,8 +91,9 @@
               <p class="eyebrow" data-i18n="deedsEyebrow">Deed catalog</p>
               <h2 id="deeds-title" data-i18n="deedsTitle">Small rituals, clear categories.</h2>
             </div>
-            <span class="soft-pill">12 types</span>
+            <span class="soft-pill" id="deedTypeCount">4 shown</span>
           </div>
+          <div class="layer-row deed-filter-row" id="deedCategoryRow" aria-label="Deed category filters"></div>
           <div class="deed-list" id="deedList">
             <article class="deed-item selected" data-title="Virtual 放生" data-desc="Release a digital fish into a selected lake or river.">
               <span class="deed-mark water"></span>

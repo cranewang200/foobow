@@ -21,6 +21,8 @@
 - Run real browser PA pass for core prototype flows.
 - Harden database and API docs with keys, relationships, indexes, retention, migration, errors, pagination, rate limits, and donation idempotency.
 - Add Playwright browser PA tests and CI browser-test stage.
+- Add richer map/deed category filters.
+- Add automated keyboard traversal, deed keyboard activation, and design-token contrast PA checks.
 
 ## In Progress
 
@@ -29,8 +31,7 @@
 
 ## Next
 
-- Add richer map/deed category filters.
-- Add full keyboard traversal and contrast checks.
+- Add full visual regression checks.
 - Select production backend/app framework.
 - Add browser-driven tests when local browser/server isolation is resolved.
 - Choose production app framework after prototype scope stabilizes.

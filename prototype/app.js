@@ -157,12 +157,19 @@ function renderMoods() {
 function renderDeeds() {
   const list = document.getElementById("deedList");
   list.replaceChildren();
+  const visibleDeeds = data.deeds.filter((deed) => state.activeCategory === "all" || deed.categoryKey === state.activeCategory);
 
-  data.deeds.forEach((deed) => {
+  if (!visibleDeeds.some((deed) => deed.id === state.selectedDeed)) {
+    state.selectedDeed = visibleDeeds[0]?.id || data.deeds[0].id;
+  }
+
+  visibleDeeds.forEach((deed) => {
     const item = document.createElement("article");
     item.className = `deed-item${state.selectedDeed === deed.id ? " selected" : ""}`;
     item.tabIndex = 0;
     item.dataset.deedId = deed.id;
+    item.setAttribute("role", "button");
+    item.setAttribute("aria-pressed", String(state.selectedDeed === deed.id));
     item.innerHTML = `
       <span class="deed-mark ${deed.mark}"></span>
       <div>
@@ -182,6 +189,7 @@ function renderDeeds() {
     list.append(item);
   });
 
+  setText("deedTypeCount", `${visibleDeeds.length} shown`);
   renderSelectedDeed();
 }
 
@@ -208,6 +216,44 @@ function renderSpot(spotId) {
     pin.setAttribute("aria-pressed", String(pin.dataset.spotId === spotId));
   });
   saveState();
+}
+
+function renderMapPins() {
+  const visibleSpotIds = Object.entries(data.spots)
+    .filter(([, spot]) => state.activeCategory === "all" || spot.categoryKey === state.activeCategory)
+    .map(([id]) => id);
+
+  if (!visibleSpotIds.includes(state.selectedSpot)) {
+    state.selectedSpot = visibleSpotIds[0] || "east-lake";
+  }
+
+  document.querySelectorAll(".map-pin").forEach((pin) => {
+    const isVisible = visibleSpotIds.includes(pin.dataset.spotId);
+    pin.classList.toggle("hidden", !isVisible);
+    pin.disabled = !isVisible;
+  });
+}
+
+function renderCategoryFilters() {
+  ["mapLayerRow", "deedCategoryRow"].forEach((containerId) => {
+    const row = document.getElementById(containerId);
+    row.replaceChildren();
+
+    data.categories.forEach((category) => {
+      const button = document.createElement("button");
+      button.className = `layer${state.activeCategory === category.id ? " active" : ""}`;
+      button.type = "button";
+      button.textContent = category.label;
+      button.dataset.categoryId = category.id;
+      button.setAttribute("aria-pressed", String(state.activeCategory === category.id));
+      button.addEventListener("click", () => {
+        state.activeCategory = category.id;
+        saveState();
+        renderAll();
+      });
+      row.append(button);
+    });
+  });
 }
 
 function renderBlessings() {
@@ -269,6 +315,8 @@ function renderAll() {
   document.body.classList.toggle("dark", state.theme === "dark");
   applyTranslations();
   renderStats();
+  renderCategoryFilters();
+  renderMapPins();
   renderMoods();
   renderDeeds();
   renderSpot(state.selectedSpot);
@@ -291,13 +339,6 @@ document.querySelectorAll(".nav-item").forEach((button) => {
 
 document.querySelectorAll(".map-pin").forEach((pin) => {
   pin.addEventListener("click", () => renderSpot(pin.dataset.spotId));
-});
-
-document.querySelectorAll(".layer").forEach((layer) => {
-  layer.addEventListener("click", () => {
-    document.querySelectorAll(".layer").forEach((item) => item.classList.remove("active"));
-    layer.classList.add("active");
-  });
 });
 
 document.getElementById("completeDaily").addEventListener("click", () => {

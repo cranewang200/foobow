@@ -47,6 +47,8 @@ test("prototype exposes the required app screens and controls", async () => {
     "languageToggle",
     "themeToggle",
     "data.js",
+    "deedCategoryRow",
+    "mapLayerRow",
     "impactDialog",
     "Virtual 放生",
     "扶老奶奶过马路"
