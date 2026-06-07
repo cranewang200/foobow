@@ -68,7 +68,8 @@ Move Foobow from a product concept into a disciplined MVP project with docs, tas
 - Seed deed types, map spots, badges, and donation campaigns.
 - Add auth/profile/check-in/deed/blessing APIs.
 - Add moderation and donation safety checks.
-- Current status: initial migration, seed data, and OpenAPI contract drafts exist with contract tests.
+- Current status: initial migration, seed data, OpenAPI contract drafts, contract tests, and a dependency-light in-memory API runtime exist.
+- Runtime bridge: `apps/api` validates public discovery, daily check-in, deed completion, blessing/report creation, verified campaign listing, and idempotent donation creation before the production backend framework is selected.
 
 ### Milestone 5: Release Readiness
 

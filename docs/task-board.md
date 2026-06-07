@@ -30,6 +30,8 @@
 - Add high/critical dependency audit gates for root and mobile packages.
 - Add initial PostgreSQL migration and seed data drafts.
 - Add OpenAPI contract draft and contract tests.
+- Add dependency-light API runtime scaffold under `apps/api`.
+- Add API runtime tests for health, discovery, check-in, deed completion, blessings, reports, donation verification, and donation idempotency.
 
 ## In Progress
 
@@ -42,7 +44,7 @@
 - Select production backend framework.
 - Add route-based app structure once Expo Router is installed.
 - Monitor Expo SDK 56 moderate transitive audit advisories for safe upstream fixes.
-- Convert migration/API drafts into the selected backend runtime.
+- Select production backend framework and convert the in-memory API scaffold to persistent route modules.
 - Add browser-driven tests when local browser/server isolation is resolved.
 - Choose production app framework after prototype scope stabilizes.
 

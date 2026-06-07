@@ -21,6 +21,7 @@ This file is the project-local memory. Keep it current whenever product directio
 - Added root and mobile high/critical audit scripts. Root audit found 0 vulnerabilities; mobile high/critical audit passed but has 10 moderate Expo-template transitive advisories where `npm audit fix --force` would downgrade Expo.
 - Added backend-readiness artifacts: `database/migrations/0001_initial.sql`, `database/seeds/0001_reference_data.sql`, `docs/openapi.json`, and Node contract tests for OpenAPI/database coverage.
 - After adding final audit/CI convenience scripts, further escalated local reruns were blocked by Codex usage limits. `npm test` still passed 8/8 in the sandbox; prior escalated `npm run test:mobile`, `npm run test:browser`, and individual high audit commands passed before the final script/doc edits.
+- Added first executable API runtime scaffold in `apps/api` using Node's built-in HTTP server and test runner. The runtime is in-memory and validates health, public discovery, daily check-ins, deed completion, blessings, reports, verified donation campaigns, donation idempotency, and standard error request IDs.
 
 ## Working Principles
 

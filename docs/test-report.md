@@ -19,6 +19,17 @@ Result:
 - API contract checks passed.
 - Database migration/seed contract checks passed.
 
+API runtime check:
+
+```text
+npm run test:api
+```
+
+Result:
+
+- 12 tests passed.
+- Covers health, deed catalog filtering, map spot filtering, daily check-in recommendations, deed completion karma, blessing creation/listing, report creation, verified campaign listing, donation idempotency, unverified campaign rejection, and standard error request IDs.
+
 Additional syntax checks:
 
 ```text

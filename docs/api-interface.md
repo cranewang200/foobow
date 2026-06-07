@@ -4,6 +4,8 @@ This is the product-level API shape for future implementation. It avoids framewo
 
 Executable OpenAPI draft: [`openapi.json`](openapi.json).
 
+Runtime scaffold: [`../apps/api`](../apps/api) implements the first dependency-light subset of this contract for local validation. It is intentionally in-memory and does not replace the future production backend framework.
+
 ## Auth And User
 
 Base path: `/api/v1`.
