@@ -70,7 +70,8 @@ test("sprint readiness docs cover auth, maps, localization, mobile release, and 
 test("CI workflow pins current runner and action runtime expectations", async () => {
   const ci = await readText(".github/workflows/ci.yml");
   const missing = hasAll(ci, [
-    "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true",
+    "actions/checkout@v6",
+    "actions/setup-node@v6",
     "node-version: 20.19.4",
     "runs-on: windows-2025",
     "npm run test:visual"
