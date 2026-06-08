@@ -109,6 +109,10 @@ test("API DB integration suite runs Prisma and Nest smoke gates in order", async
     "scripts/prisma-write-smoke.ts",
     "scripts/nest-db-http-smoke.ts",
     "DB integration suite passed",
+    "FOOBOW_DB_TEST_RUN_ID",
+    "Cleaned records",
+    "delete from safety_reports",
+    "delete from deed_actions",
     "test:db-integration",
     "Run API DB integration suite"
   ]) {

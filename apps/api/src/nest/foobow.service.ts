@@ -330,7 +330,8 @@ export class FoobowService {
             mapSpotId: mapSpot?.id,
             status: body.status,
             visibility: body.visibility ?? "private",
-            completedAt: body.status === "completed" ? new Date() : null
+            completedAt: body.status === "completed" ? new Date() : null,
+            metadata: process.env.FOOBOW_DB_TEST_RUN_ID ? { test_run_id: process.env.FOOBOW_DB_TEST_RUN_ID } : {}
           }
         });
         const karmaEvent =

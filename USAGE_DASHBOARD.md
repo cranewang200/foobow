@@ -1,14 +1,14 @@
 # Foobow AI Team Usage Dashboard
 
-Last updated: 2026-06-08 08:51 America/Toronto
+Last updated: 2026-06-08 09:09 America/Toronto
 
 ## Current Load
 
 | Agent | 5h Window Used | Weekly Used | Requests Today | Est. Tokens In/Out | Load % | Last Task |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Codex 5.5 | ~252 min | Unknown | 34 | ~202k in / ~49k out | 95% | Verified remote CI success after fixing DB seed URL |
-| Claude 4.8 | ~8 min | Unknown | 5 | ~5k in / ~2k out | 9% | Assigned env-simplification review; latest CLI call timed out at 120s with no output |
-| Gemini 3.5 | ~7 min | Unknown | 4 | ~9k in / ~3k out | 11% | Assigned env-simplification review; latest CLI call timed out at 120s after prior 429 risk |
+| Codex 5.5 | ~270 min | Unknown | 38 | ~218k in / ~53k out | 99% | Verified full local gate after DB integration cleanup |
+| Claude 4.8 | ~9 min | Unknown | 6 | ~5k in / ~2k out | 10% | Short orchestration prompt timed out at 60s with no output |
+| Gemini 3.5 | ~8 min | Unknown | 5 | ~9k in / ~3k out | 12% | Short orchestration prompt first hit sandbox EPERM, then timed out with elevation |
 
 ## Assignment Rules
 
@@ -37,7 +37,7 @@ Last updated: 2026-06-08 08:51 America/Toronto
 - Plugin setup status: Browser, GitHub, Chrome, Computer Use, Documents, Presentations, Spreadsheets, Canva, and thread/automation tools are available; no extra plugin install is required for the current sprint.
 - Shared catalog status: `shared/foobow-catalog.json` plus `npm run test:catalog` now verifies prototype, mobile, API fixture, and SQL seed product-object alignment.
 - External service setup status: root `.env.example`, ignored `.env.local`, `docs/external-service-resources.md`, and `npm run test:env` now define a reduced mobile MVP key set: Supabase/local Postgres, Clerk, Mapbox, API URL, and local dev token. Stripe is optional for donation mode; Vercel/Sentry/PostHog/Expo tokens are deferred; no email API key is required for MVP.
-- API DB integration status: `npm --prefix apps/api run test:db-integration` now runs both the Prisma service write-path smoke and Nest HTTP DB smoke; CI uses the same command after applying SQL schema/seed.
+- API DB integration status: `npm --prefix apps/api run test:db-integration` now runs both the Prisma service write-path smoke and Nest HTTP DB smoke; CI uses the same command after applying SQL schema/seed. The suite now tags each run with `FOOBOW_DB_TEST_RUN_ID` and removes records created by that run.
 
 ## Last Sync Notes
 
@@ -60,4 +60,6 @@ Last updated: 2026-06-08 08:51 America/Toronto
 - Latest local gate: `npm run test:all` passed before push, Docker Postgres was verified healthy through elevated Docker access, `npm --prefix apps/api run test:db-integration` passed against the local database, and `npm test` passed after the remote CI URL patch.
 - Latest remote CI finding: run `27137795568` failed because the `psql` schema/seed step used the Prisma URL with `?schema=public`; CI now keeps `DATABASE_URL` for Prisma and uses `PSQL_DATABASE_URL` without query parameters for `psql`.
 - Latest remote CI gate: run `27137979006` for `3bbfeac Fix CI database seed URL` completed successfully.
-- Rotation note: Codex is now above the 80% threshold; next orchestration pass should avoid assigning new heavy implementation work to Codex until capacity recovers. Claude/Gemini remain available for planning, but Gemini may temporarily fail with server 429 capacity and both CLIs timed out in the latest env-review attempt.
+- Latest local gate: `npm run test:api`, `npm --prefix apps/api run test:db-integration`, `npm test`, and `npm run test:all` passed after adding per-run DB cleanup.
+- Latest external AI validation: Claude timed out on a short 60s orchestration prompt; Gemini first failed with a sandbox `EPERM` resolving `C:\Users\crane`, then timed out after elevated retry. Do not depend on either CLI for blocking-path work until a short prompt returns successfully.
+- Rotation note: Codex is now above the 80% threshold; next orchestration pass should avoid assigning new heavy implementation work to Codex until capacity recovers. Claude/Gemini are low-load in the dashboard but currently unreliable due CLI timeouts.

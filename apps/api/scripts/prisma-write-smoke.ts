@@ -23,6 +23,7 @@ function loadLocalEnv() {
 async function main() {
   loadLocalEnv();
   assert.ok(process.env.DATABASE_URL, "DATABASE_URL is required for the Prisma write smoke test.");
+  const runId = process.env.FOOBOW_DB_TEST_RUN_ID ?? `manual_${randomUUID()}`;
 
   const prisma = new PrismaService();
   await prisma.onModuleInit();
@@ -32,7 +33,7 @@ async function main() {
   assert.equal(me.user.id, "user_demo");
 
   try {
-    const checkin = await service.createCheckin({ mood: "calm", note: "Local Prisma smoke check." });
+    const checkin = await service.createCheckin({ mood: "calm", note: `Local Prisma smoke check. run=${runId}` });
     assert.match(String(checkin.checkin.id), /^checkin_/);
   } catch (error) {
     if (!(error instanceof ConflictException)) {
@@ -49,7 +50,7 @@ async function main() {
   assert.equal(deed.karma_event.points, 5);
 
   const blessing = await service.createBlessing({
-    body: `May this smoke run stay kind ${randomUUID().slice(0, 8)}.`,
+    body: `May this smoke run stay kind ${randomUUID().slice(0, 8)}. run=${runId}`,
     visibility: "anonymous"
   });
   assert.match(String(blessing.blessing.id), /^blessing_/);
@@ -57,11 +58,11 @@ async function main() {
   const report = await service.createReport({
     target_type: "blessing",
     target_id: String(blessing.blessing.id),
-    reason: "Smoke-test moderation path."
+    reason: `Smoke-test moderation path. run=${runId}`
   });
   assert.match(String(report.report.id), /^report_/);
 
-  const idempotencyKey = `smoke_${randomUUID()}`;
+  const idempotencyKey = `smoke_${runId}_${randomUUID()}`;
   const donation = await service.createDonation(idempotencyKey, {
     campaign_id: "campaign_operating_support",
     amount: "1.00",

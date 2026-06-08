@@ -44,7 +44,7 @@ docker compose up -d foobow-postgres
 npm --prefix apps/api run test:db-integration
 ```
 
-The integration gate runs the Prisma service write-path smoke and the Nest HTTP DB smoke against `DATABASE_URL`.
+The integration gate runs the Prisma service write-path smoke and the Nest HTTP DB smoke against `DATABASE_URL`. Each run is tagged with `FOOBOW_DB_TEST_RUN_ID` and cleans up its own smoke records after completion.
 
 ## Scope
 
@@ -55,4 +55,4 @@ The integration gate runs the Prisma service write-path smoke and the Nest HTTP 
 - NestJS DTOs, guarded routes, and Swagger setup mirror the current runtime contract.
 - `prisma/schema.prisma` mirrors the current SQL migration draft and preserves opaque public IDs plus donation idempotency.
 - Prisma CLI 7 migration generation waits for local Node `20.19+`; current local Node was `20.17.0` during scaffold work.
-- `test:db-integration` is the local/CI acceptance command for database-backed API behavior after schema and seed are applied.
+- `test:db-integration` is the local/CI acceptance command for database-backed API behavior after schema and seed are applied. It removes records created by the current run so repeated checks do not clutter shared development databases.

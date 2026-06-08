@@ -40,6 +40,7 @@ function assertStatus(actual: { response: Response; body: unknown }, expected: n
 async function main() {
   loadLocalEnv();
   assert.ok(process.env.DATABASE_URL, "DATABASE_URL is required for the Nest DB HTTP smoke test.");
+  const runId = process.env.FOOBOW_DB_TEST_RUN_ID ?? `manual_${randomUUID()}`;
 
   const app = await NestFactory.create(AppModule, { logger: ["error", "warn"] });
   app.useGlobalPipes(
@@ -70,7 +71,7 @@ async function main() {
     const checkin = await request(baseUrl, "/api/v1/checkins", {
       method: "POST",
       headers: authHeaders,
-      body: JSON.stringify({ mood: "hopeful", note: "HTTP DB smoke check." })
+      body: JSON.stringify({ mood: "hopeful", note: `HTTP DB smoke check. run=${runId}` })
     });
     assert.ok([201, 409].includes(checkin.response.status));
 
@@ -85,7 +86,7 @@ async function main() {
     const blessing = await request(baseUrl, "/api/v1/blessings", {
       method: "POST",
       headers: authHeaders,
-      body: JSON.stringify({ body: `HTTP smoke blessing ${randomUUID().slice(0, 8)}`, visibility: "anonymous" })
+      body: JSON.stringify({ body: `HTTP smoke blessing ${randomUUID().slice(0, 8)} run=${runId}`, visibility: "anonymous" })
     });
     assertStatus(blessing, 201, "POST /api/v1/blessings");
     assert.match(blessing.body.blessing.id, /^blessing_/);
@@ -96,13 +97,13 @@ async function main() {
       body: JSON.stringify({
         target_type: "blessing",
         target_id: blessing.body.blessing.id,
-        reason: "HTTP smoke moderation path."
+        reason: `HTTP smoke moderation path. run=${runId}`
       })
     });
     assertStatus(report, 201, "POST /api/v1/reports");
     assert.match(report.body.report.id, /^report_/);
 
-    const idempotencyKey = `http_smoke_${randomUUID()}`;
+    const idempotencyKey = `http_smoke_${runId}_${randomUUID()}`;
     const donationPayload = { campaign_id: "campaign_operating_support", amount: "1.00", currency: "CAD" };
     const donation = await request(baseUrl, "/api/v1/donations", {
       method: "POST",
