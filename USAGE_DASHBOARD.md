@@ -1,12 +1,12 @@
 # Foobow AI Team Usage Dashboard
 
-Last updated: 2026-06-08 11:24 America/Toronto
+Last updated: 2026-06-08 11:56 America/Toronto
 
 ## Current Load
 
 | Agent | 5h Window Used | Weekly Used | Requests Today | Est. Tokens In/Out | Load % | Last Task |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Codex 5.5 | ~300 min | Unknown | 44 | ~241k in / ~60k out | 99% | Heartbeat audit found repo clean and remaining work blocked by inputs/tooling |
+| Codex 5.5 | ~306 min | Unknown | 45 | ~246k in / ~61k out | 99% | Confirmed local gates and latest remote CI while remaining work is blocked |
 | Claude 4.8 | ~9 min | Unknown | 6 | ~5k in / ~2k out | 10% | Short orchestration prompt timed out at 60s with no output |
 | Gemini 3.5 | ~8 min | Unknown | 5 | ~9k in / ~3k out | 12% | Short orchestration prompt first hit sandbox EPERM, then timed out with elevation |
 
@@ -67,4 +67,5 @@ Last updated: 2026-06-08 11:24 America/Toronto
 - Latest remote CI gate: run `27140916474` for `d6806a9 Track accepted dependency advisories` completed successfully.
 - Latest external AI validation: Claude timed out on a short 60s orchestration prompt; Gemini first failed with a sandbox `EPERM` resolving `C:\Users\crane`, then timed out after elevated retry. Do not depend on either CLI for blocking-path work until a short prompt returns successfully.
 - Latest heartbeat audit: working tree was clean, `npm run test:advisories` passed, and `npm test` passed. No safe new local sprint task was available without provider credentials, local Node upgrade approval, or reliable external AI CLI rotation.
+- Latest heartbeat audit: working tree was clean, `npm run test:advisories` passed, `npm test` passed, and GitHub Actions run `27148145672` for `76c11d2 Record blocked heartbeat audit` completed successfully.
 - Rotation note: Codex is now above the 80% threshold; next orchestration pass should avoid assigning new heavy implementation work to Codex until capacity recovers. Claude/Gemini are low-load in the dashboard but currently unreliable due CLI timeouts.
