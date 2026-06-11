@@ -75,6 +75,8 @@ Foobow should feel calm, premium, emotionally warm, and trustworthy. It should a
 - [OpenAPI Contract](docs/openapi.json)
 - [Project Plan](docs/project-plan.md)
 - [Task Board](docs/task-board.md)
+- [Sprint Audit And Next Plan](docs/sprint-audit-and-next-plan.md)
+- [Calm Ritual Feature Spec](docs/calm-ritual-feature-spec.md)
 - [Acceptance Criteria](docs/acceptance-criteria.md)
 - [Test Report](docs/test-report.md)
 - [PA Audit 2026-06-07](docs/pa-audit-2026-06-07.md)

@@ -1,14 +1,14 @@
 # Foobow AI Team Usage Dashboard
 
-Last updated: 2026-06-08 11:56 America/Toronto
+Last updated: 2026-06-11 11:55 America/Toronto
 
 ## Current Load
 
 | Agent | 5h Window Used | Weekly Used | Requests Today | Est. Tokens In/Out | Load % | Last Task |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Codex 5.5 | ~306 min | Unknown | 45 | ~246k in / ~61k out | 99% | Confirmed local gates and latest remote CI while remaining work is blocked |
-| Claude 4.8 | ~9 min | Unknown | 6 | ~5k in / ~2k out | 10% | Short orchestration prompt timed out at 60s with no output |
-| Gemini 3.5 | ~8 min | Unknown | 5 | ~9k in / ~3k out | 12% | Short orchestration prompt first hit sandbox EPERM, then timed out with elevation |
+| Codex 5.5 | ~306 min | Unknown | 49 | ~256k in / ~66k out | 99% | Integrated Calm Ritual into static prototype and Expo shell |
+| Claude 4.8 | ~10 min | Unknown | 8 | ~6k in / ~3k out | 12% | Health check passed; provided non-secret sprint-priority review |
+| Gemini 3.5 | ~9 min | Unknown | 7 | ~10k in / ~4k out | 14% | Health check passed with elevation; provided non-secret product/QA suggestions |
 
 ## Assignment Rules
 
@@ -69,3 +69,7 @@ Last updated: 2026-06-08 11:56 America/Toronto
 - Latest heartbeat audit: working tree was clean, `npm run test:advisories` passed, and `npm test` passed. No safe new local sprint task was available without provider credentials, local Node upgrade approval, or reliable external AI CLI rotation.
 - Latest heartbeat audit: working tree was clean, `npm run test:advisories` passed, `npm test` passed, and GitHub Actions run `27148145672` for `76c11d2 Record blocked heartbeat audit` completed successfully.
 - Rotation note: Codex is now above the 80% threshold; next orchestration pass should avoid assigning new heavy implementation work to Codex until capacity recovers. Claude/Gemini are low-load in the dashboard but currently unreliable due CLI timeouts.
+- Latest orchestration update: durable `AGENTS.md` rules now require checking usage and rotating heavy work away from any agent at or above 80% load. Claude Code passed `CLAUDE_HEALTH_OK`; Gemini passed `GEMINI_HEALTH_OK` only when run with elevation because sandboxed startup still hits `EPERM` on `C:\Users\crane`.
+- Latest external AI assignments: Claude reviewed sprint priorities and recommended provider setup, Node standardization, Calm Ritual spec-first work, agent health checks, and decoupled API contract tasks. Gemini reviewed meditation-inspired product QA and recommended adaptive soundscapes, intentionality timer, hold-to-complete, gentle ripple animation, and private reflection.
+- Latest local gate: `npm test` passed with 23/23 tests after adding `AGENTS.md`, sprint audit notes, and Calm Ritual feature planning.
+- Latest heartbeat sprint task: Calm Ritual is now visible in the static prototype and Expo shell with soundscape choices, focus progress, guided steps, accessible completion controls, quiet progress copy, and safety language separating symbolic comfort from guaranteed outcomes.

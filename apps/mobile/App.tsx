@@ -41,6 +41,8 @@ export default function App({ initialTab = "today", routeMode = false }: FoobowA
   const [selectedMood, setSelectedMood] = useState<(typeof moods)[number]>(moods[0]);
   const [selectedSpotId, setSelectedSpotId] = useState("east-lake");
   const [selectedDeedId, setSelectedDeedId] = useState("release-fish");
+  const [soundscape, setSoundscape] = useState("Water");
+  const [focusReady, setFocusReady] = useState(false);
   const [karma, setKarma] = useState(68);
   const [streak, setStreak] = useState(7);
   const [journal, setJournal] = useState("");
@@ -76,6 +78,17 @@ export default function App({ initialTab = "today", routeMode = false }: FoobowA
 
   function performRitual() {
     setKarma((value) => Math.min(100, value + selectedDeed.points));
+  }
+
+  function startFocusSession() {
+    setFocusReady(true);
+  }
+
+  function completeFocusedRitual() {
+    if (!focusReady) return;
+    setKarma((value) => Math.min(100, value + selectedDeed.points + 2));
+    setJournal((value) => value || "I took a calm moment before completing one symbolic deed.");
+    setFocusReady(false);
   }
 
   function sendBlessing() {
@@ -210,6 +223,50 @@ export default function App({ initialTab = "today", routeMode = false }: FoobowA
               <Pressable style={styles.primaryButton} onPress={performRitual}>
                 <Text style={styles.primaryButtonText}>Perform ritual</Text>
               </Pressable>
+            </View>
+            <View style={styles.calmCard}>
+              <View style={styles.rowBetween}>
+                <View style={styles.flexOne}>
+                  <Text style={styles.eyebrow}>Calm ritual</Text>
+                  <Text style={styles.sectionTitle}>Take a focused moment first.</Text>
+                </View>
+                <Text style={styles.pill}>{focusReady ? "ready" : "optional"}</Text>
+              </View>
+              <Text style={styles.body}>Use a short presence timer, optional soundscape, and quiet reflection before recording a symbolic deed.</Text>
+              <View style={styles.soundscapeRow}>
+                {["Water", "Rain", "Forest"].map((item) => (
+                  <Pressable
+                    key={item}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: soundscape === item }}
+                    onPress={() => setSoundscape(item)}
+                    style={[styles.filterChip, soundscape === item && styles.filterChipActive]}
+                  >
+                    <Text style={[styles.filterText, soundscape === item && styles.filterTextActive]}>{item}</Text>
+                  </Pressable>
+                ))}
+              </View>
+              <View style={styles.focusTrack}>
+                <View style={[styles.focusFill, { width: focusReady ? "100%" : "18%" }]} />
+              </View>
+              <View style={styles.guidedList}>
+                <Text style={styles.body}>1. Breathe once and name the intention.</Text>
+                <Text style={styles.body}>2. Hold the action gently until the timer completes.</Text>
+                <Text style={styles.body}>3. Record how you feel without pressure.</Text>
+              </View>
+              <View style={styles.calmActions}>
+                <Pressable style={styles.secondaryButton} onPress={startFocusSession}>
+                  <Text style={styles.secondaryButtonText}>Start 20s focus</Text>
+                </Pressable>
+                <Pressable
+                  accessibilityState={{ disabled: !focusReady }}
+                  style={[styles.primaryButton, !focusReady && styles.disabledButton]}
+                  onPress={completeFocusedRitual}
+                >
+                  <Text style={styles.primaryButtonText}>Complete with focus</Text>
+                </Pressable>
+              </View>
+              <Text style={styles.safetyText}>This is symbolic comfort only. It does not guarantee luck, virtue, health, or real-world impact.</Text>
             </View>
           </View>
         )}
@@ -440,6 +497,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12
   },
+  flexOne: {
+    flex: 1
+  },
   pill: {
     borderWidth: 1,
     borderColor: colors.line,
@@ -483,6 +543,23 @@ const styles = StyleSheet.create({
   primaryButtonText: {
     color: colors.surface,
     fontWeight: "900"
+  },
+  secondaryButton: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 16,
+    backgroundColor: colors.surface
+  },
+  secondaryButtonText: {
+    color: colors.ink,
+    fontWeight: "900"
+  },
+  disabledButton: {
+    opacity: 0.55
   },
   input: {
     minHeight: 88,
@@ -547,6 +624,43 @@ const styles = StyleSheet.create({
     padding: 14,
     marginTop: 10,
     gap: 6
+  },
+  calmCard: {
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 8,
+    padding: 16,
+    marginTop: 14,
+    gap: 12
+  },
+  soundscapeRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8
+  },
+  focusTrack: {
+    height: 10,
+    borderRadius: 999,
+    backgroundColor: "rgba(15, 108, 100, 0.12)",
+    overflow: "hidden"
+  },
+  focusFill: {
+    height: "100%",
+    borderRadius: 999,
+    backgroundColor: colors.teal
+  },
+  guidedList: {
+    gap: 4
+  },
+  calmActions: {
+    flexDirection: "row",
+    gap: 10
+  },
+  safetyText: {
+    color: colors.muted,
+    fontSize: 13,
+    lineHeight: 19
   },
   blessingCard: {
     backgroundColor: colors.surface,

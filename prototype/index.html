@@ -137,6 +137,31 @@
               <button class="primary-action" id="performRitual" type="button" data-i18n="performRitual">Perform ritual</button>
             </div>
           </section>
+
+          <section class="calm-ritual-card" aria-labelledby="calm-ritual-title" aria-live="polite">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow" data-i18n="calmEyebrow">Calm ritual</p>
+                <h3 id="calm-ritual-title" data-i18n="calmTitle">Take a focused moment first.</h3>
+              </div>
+              <span class="soft-pill" id="calmStatus">optional</span>
+            </div>
+            <p class="calm-copy" data-i18n="calmCopy">Use a short presence timer, optional soundscape, and quiet reflection before recording a symbolic deed.</p>
+            <div class="soundscape-row" id="soundscapeRow" aria-label="Optional soundscape choices"></div>
+            <div class="focus-meter" aria-label="Calm ritual focus progress">
+              <span id="focusProgress"></span>
+            </div>
+            <ol class="guided-steps">
+              <li data-i18n="guidedStepOne">Breathe once and name the intention.</li>
+              <li data-i18n="guidedStepTwo">Hold the action gently until the timer completes.</li>
+              <li data-i18n="guidedStepThree">Record how you feel without pressure.</li>
+            </ol>
+            <div class="calm-actions">
+              <button class="text-button" id="startFocusSession" type="button" data-i18n="startFocus">Start 20s focus</button>
+              <button class="primary-action" id="completeFocusedRitual" type="button" data-i18n="completeFocused" disabled>Complete with focus</button>
+            </div>
+            <p class="safety-note" data-i18n="calmSafety">This is symbolic comfort only. It does not guarantee luck, virtue, health, or real-world impact.</p>
+          </section>
         </section>
 
         <section class="screen" id="screen-community" aria-labelledby="community-title">

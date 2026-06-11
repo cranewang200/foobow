@@ -48,8 +48,9 @@ test("ODD, database, API, project plan, task board, and memory docs exist in REA
 test("plugin and AI orchestration docs define available tools, roles, rotation, and automation", async () => {
   const orchestration = await readText("docs/plugin-and-ai-orchestration.md");
   const dashboard = await readText("USAGE_DASHBOARD.md");
+  const agents = await readText("AGENTS.md");
 
-  const missing = hasAll(orchestration + dashboard, [
+  const missing = hasAll(orchestration + dashboard + agents, [
     "Browser",
     "GitHub",
     "Computer Use",
@@ -62,7 +63,38 @@ test("plugin and AI orchestration docs define available tools, roles, rotation, 
     "Gemini 3.5",
     "80%",
     "foobow-vibeorchestrator-usage-check",
-    "External AI"
+    "External AI",
+    "Codex is the default orchestrator",
+    "Claude Code",
+    "Gemini",
+    "Never send secrets"
+  ]);
+
+  assert.deepEqual(missing, []);
+});
+
+test("sprint audit captures next plan and meditation reference opportunities", async () => {
+  const audit = await readText("docs/sprint-audit-and-next-plan.md");
+  const readme = await readText("README.md");
+  const taskBoard = await readText("docs/task-board.md");
+  const calmRitual = await readText("docs/calm-ritual-feature-spec.md");
+
+  const missing = hasAll(audit + readme + taskBoard + calmRitual, [
+    "Sprint Audit And Next Plan",
+    "putiyuan Meditation",
+    "Ambient session mode",
+    "Completion threshold",
+    "Guided cards",
+    "Gentle celebration",
+    "Calm Ritual Feature Spec",
+    "Presence timer",
+    "Hold-to-complete",
+    "reduced-motion",
+    "Codex remains orchestration owner",
+    "Claude Code",
+    "Gemini",
+    "Next 3-5 Tasks",
+    "cannot buy luck, virtue, or guaranteed karma"
   ]);
 
   assert.deepEqual(missing, []);
@@ -193,6 +225,12 @@ test("prototype exposes the required app screens and controls", async () => {
     "screen-profile",
     "languageToggle",
     "themeToggle",
+    "calm-ritual-title",
+    "soundscapeRow",
+    "focusProgress",
+    "startFocusSession",
+    "completeFocusedRitual",
+    "This is symbolic comfort only",
     "data.js",
     "deedCategoryRow",
     "mapLayerRow",

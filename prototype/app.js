@@ -20,6 +20,15 @@ const translations = {
     deedsTitle: "Small rituals, clear categories.",
     ritualPreview: "Ritual preview",
     performRitual: "Perform ritual",
+    calmEyebrow: "Calm ritual",
+    calmTitle: "Take a focused moment first.",
+    calmCopy: "Use a short presence timer, optional soundscape, and quiet reflection before recording a symbolic deed.",
+    guidedStepOne: "Breathe once and name the intention.",
+    guidedStepTwo: "Hold the action gently until the timer completes.",
+    guidedStepThree: "Record how you feel without pressure.",
+    startFocus: "Start 20s focus",
+    completeFocused: "Complete with focus",
+    calmSafety: "This is symbolic comfort only. It does not guarantee luck, virtue, health, or real-world impact.",
     communityEyebrow: "Community",
     communityTitle: "A low-pressure kindness wall.",
     blessingPlaceholder: "May your road feel less heavy today.",
@@ -59,6 +68,15 @@ const translations = {
     deedsTitle: "\u5c0f\u4eea\u5f0f\uff0c\u6e05\u6670\u5206\u7c7b\u3002",
     ritualPreview: "\u4eea\u5f0f\u9884\u89c8",
     performRitual: "\u6267\u884c\u4eea\u5f0f",
+    calmEyebrow: "\u9759\u5fc3\u4eea\u5f0f",
+    calmTitle: "\u5148\u7559\u4e00\u4e2a\u4e13\u6ce8\u7684\u7247\u523b\u3002",
+    calmCopy: "\u5728\u8bb0\u5f55\u8c61\u5f81\u6027\u5584\u4e3e\u524d\uff0c\u4f7f\u7528\u77ed\u6682\u8ba1\u65f6\u3001\u53ef\u9009\u58f0\u666f\u548c\u5b89\u9759\u53cd\u601d\u3002",
+    guidedStepOne: "\u547c\u5438\u4e00\u6b21\uff0c\u8bf4\u51fa\u4eca\u5929\u7684\u5fc3\u610f\u3002",
+    guidedStepTwo: "\u8f7b\u8f7b\u6309\u4f4f\u52a8\u4f5c\uff0c\u76f4\u5230\u8ba1\u65f6\u5b8c\u6210\u3002",
+    guidedStepThree: "\u65e0\u538b\u529b\u5730\u8bb0\u5f55\u6b64\u523b\u7684\u611f\u53d7\u3002",
+    startFocus: "\u5f00\u59cb 20 \u79d2\u4e13\u6ce8",
+    completeFocused: "\u4e13\u6ce8\u5b8c\u6210",
+    calmSafety: "\u8fd9\u53ea\u662f\u8c61\u5f81\u6027\u5b89\u6170\uff0c\u4e0d\u4fdd\u8bc1\u597d\u8fd0\u3001\u7f8e\u5fb7\u3001\u5065\u5eb7\u6216\u771f\u5b9e\u5f71\u54cd\u3002",
     communityEyebrow: "\u793e\u533a",
     communityTitle: "\u4f4e\u538b\u529b\u7684\u795d\u798f\u5899\u3002",
     blessingPlaceholder: "\u613f\u4f60\u4eca\u5929\u7684\u8def\u4e0d\u90a3\u4e48\u6c89\u91cd\u3002",
@@ -83,6 +101,7 @@ const translations = {
 };
 
 let state = loadState();
+let focusTimer = null;
 
 function loadState() {
   try {
@@ -203,6 +222,70 @@ function renderSelectedDeed() {
   const deed = data.deeds.find((item) => item.id === state.selectedDeed) || data.deeds[0];
   setText("ritualTitle", deed.title);
   setText("ritualDesc", deed.description);
+  renderFocusSession();
+}
+
+function renderSoundscapes() {
+  const row = document.getElementById("soundscapeRow");
+  row.replaceChildren();
+
+  data.soundscapes.forEach((soundscape) => {
+    const button = document.createElement("button");
+    button.className = `layer${state.soundscape === soundscape.id ? " active" : ""}`;
+    button.type = "button";
+    button.textContent = soundscape.label;
+    button.title = soundscape.description;
+    button.setAttribute("aria-pressed", String(state.soundscape === soundscape.id));
+    button.addEventListener("click", () => {
+      state.soundscape = soundscape.id;
+      saveState();
+      renderSoundscapes();
+    });
+    row.append(button);
+  });
+}
+
+function renderFocusSession() {
+  const progress = Math.max(0, Math.min(100, state.focusProgress || 0));
+  const bar = document.getElementById("focusProgress");
+  const status = document.getElementById("calmStatus");
+  const completeButton = document.getElementById("completeFocusedRitual");
+
+  if (bar) bar.style.width = `${progress}%`;
+  if (status) {
+    status.textContent = state.focusReady ? "ready" : progress > 0 ? `${progress}%` : "optional";
+  }
+  if (completeButton) completeButton.disabled = !state.focusReady;
+}
+
+function startFocusSession() {
+  window.clearInterval(focusTimer);
+  state.focusProgress = 0;
+  state.focusReady = false;
+  renderFocusSession();
+
+  focusTimer = window.setInterval(() => {
+    state.focusProgress = Math.min(100, (state.focusProgress || 0) + 20);
+    state.focusReady = state.focusProgress >= 100;
+    renderFocusSession();
+    if (state.focusReady) {
+      window.clearInterval(focusTimer);
+      saveState();
+    }
+  }, 600);
+}
+
+function completeFocusedRitual() {
+  if (!state.focusReady) return;
+  updateKarma(7);
+  state.focusProgress = 0;
+  state.focusReady = false;
+  state.journal = state.journal || "I took a calm moment before completing one symbolic deed.";
+  saveState();
+  renderAll();
+  const scene = document.getElementById("ritualScene");
+  scene.classList.remove("completed");
+  window.requestAnimationFrame(() => scene.classList.add("completed"));
 }
 
 function renderSpot(spotId) {
@@ -316,12 +399,14 @@ function renderAll() {
   applyTranslations();
   renderStats();
   renderCategoryFilters();
+  renderSoundscapes();
   renderMapPins();
   renderMoods();
   renderDeeds();
   renderSpot(state.selectedSpot);
   renderBlessings();
   renderSettings();
+  renderFocusSession();
   document.getElementById("journalEntry").value = state.journal;
   const mood = data.moods.find((item) => item.id === state.mood) || data.moods[0];
   setText("recommendedDeed", mood.deed);
@@ -355,6 +440,9 @@ document.getElementById("performRitual").addEventListener("click", () => {
   scene.classList.remove("completed");
   window.requestAnimationFrame(() => scene.classList.add("completed"));
 });
+
+document.getElementById("startFocusSession").addEventListener("click", startFocusSession);
+document.getElementById("completeFocusedRitual").addEventListener("click", completeFocusedRitual);
 
 document.getElementById("journalEntry").addEventListener("input", (event) => {
   state.journal = event.target.value;

@@ -9,6 +9,9 @@ window.FOOBOW_DATA = {
     activeCategory: "all",
     selectedDeed: "release-fish",
     selectedSpot: "east-lake",
+    soundscape: "water",
+    focusProgress: 0,
+    focusReady: false,
     journal: "",
     settings: {
       privateJournal: true,
@@ -36,6 +39,11 @@ window.FOOBOW_DATA = {
     { id: "elders", label: "Elders" },
     { id: "environment", label: "Nature" },
     { id: "support", label: "Blessings" }
+  ],
+  soundscapes: [
+    { id: "water", label: "Water", description: "Soft lake ripples for virtual release." },
+    { id: "rain", label: "Rain", description: "Quiet rain for umbrella and support deeds." },
+    { id: "forest", label: "Forest", description: "Low wind for tree and cleanup deeds." }
   ],
   moods: [
     { id: "calm", label: "Calm", deed: "Release fish at East Lake" },

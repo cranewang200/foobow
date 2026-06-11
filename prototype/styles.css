@@ -161,6 +161,7 @@ h3 {
 .deed-focus,
 .spot-detail,
 .ritual-panel,
+.calm-ritual-card,
 .blessing-form,
 .profile-head {
   background: color-mix(in srgb, var(--surface) 92%, transparent);
@@ -228,6 +229,7 @@ h3 {
 .deed-focus,
 .spot-detail,
 .ritual-panel,
+.calm-ritual-card,
 .blessing-form,
 .profile-head {
   margin-top: 14px;
@@ -277,6 +279,11 @@ h3 {
 .ritual-panel {
   display: grid;
   gap: 14px;
+}
+
+.calm-ritual-card {
+  display: grid;
+  gap: 12px;
 }
 
 .primary-action {
@@ -407,6 +414,12 @@ textarea {
   margin-top: 14px;
 }
 
+.soundscape-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .layer {
   border-radius: 999px;
   min-height: 36px;
@@ -533,6 +546,52 @@ textarea {
 
 .ritual-scene.completed .fish-shape {
   animation: release 900ms ease both;
+}
+
+.focus-meter {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teal) 12%, var(--surface));
+}
+
+.focus-meter span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  transition: width 500ms ease;
+}
+
+.guided-steps {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.calm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.calm-actions .primary-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.calm-copy,
+.safety-note {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.safety-note {
+  font-size: 0.86rem;
 }
 
 @keyframes release {
