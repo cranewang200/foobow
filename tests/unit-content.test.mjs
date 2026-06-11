@@ -195,6 +195,7 @@ test("CI workflow pins current runner and action runtime expectations", async ()
     "api-db-smoke",
     "postgres:17-alpine",
     "Apply SQL schema and seed",
+    "database/migrations/0002_focus_sessions.sql",
     "Run API DB integration suite",
     "test:db-integration",
     "npm run test:visual"
