@@ -97,3 +97,29 @@ test("Prisma schema mirrors public IDs, donation idempotency, and moderation mod
   assert.deepEqual(configMissing, []);
   assert.equal(schema.includes("url      = env(\"DATABASE_URL\")"), false);
 });
+
+test("focus session migration and Prisma draft support Calm Ritual persistence", async () => {
+  const sql = await readText("database/migrations/0002_focus_sessions.sql");
+  const schema = await readText("apps/api/prisma/schema.prisma");
+  const docs = await readText("docs/database-structure.md");
+
+  const missing = hasAll(sql + schema + docs, [
+    "create table focus_soundscapes",
+    "create table focus_sessions",
+    "create table focus_reflections",
+    "completion_idempotency_key text unique",
+    "completion_threshold_percent",
+    "reduced_motion",
+    "karma_events_source_unique",
+    "model FocusSoundscape",
+    "model FocusSession",
+    "model FocusReflection",
+    "focusSessions",
+    "focusReflections",
+    "sourcePublicId",
+    "focus_session.status",
+    "Focus-session karma is awarded only when a server-side duration threshold is met"
+  ]);
+
+  assert.deepEqual(missing, []);
+});

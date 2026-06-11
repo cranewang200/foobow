@@ -21,6 +21,8 @@ model User {
   profile        Profile?
   checkins       MoodCheckin[]
   deedActions    DeedAction[]
+  focusSessions  FocusSession[]
+  focusReflections FocusReflection[]
   karmaEvents    KarmaEvent[]
   journalEntries JournalEntry[]
   blessings      Blessing[]
@@ -128,6 +130,7 @@ model DeedAction {
   mapSpot     MapSpot?     @relation(fields: [mapSpotId], references: [id], onDelete: SetNull)
   karmaEvents KarmaEvent[]
   journals    JournalEntry[]
+  focusSessions FocusSession[]
 
   @@index([userId, completedAt])
   @@index([deedTypeId, completedAt])
@@ -140,17 +143,85 @@ model KarmaEvent {
   publicId     String   @unique @map("public_id")
   userId       BigInt   @map("user_id")
   deedActionId BigInt?  @map("deed_action_id")
+  focusSessionId BigInt? @map("focus_session_id")
   eventType    String   @map("event_type")
   points       BigInt
   reason       String
+  sourceType   String?  @map("source_type")
+  sourcePublicId String? @map("source_public_id")
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   deedAction DeedAction? @relation(fields: [deedActionId], references: [id], onDelete: SetNull)
+  focusSession FocusSession? @relation(fields: [focusSessionId], references: [id], onDelete: SetNull)
 
   @@index([userId, createdAt])
   @@index([deedActionId])
+  @@index([focusSessionId])
+  @@unique([sourceType, sourcePublicId])
   @@map("karma_events")
+}
+
+model FocusSoundscape {
+  id          BigInt   @id @default(autoincrement())
+  slug        String   @unique
+  name        String
+  category    String
+  description String
+  status      String   @default("active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  focusSessions FocusSession[]
+
+  @@map("focus_soundscapes")
+}
+
+model FocusSession {
+  id                         BigInt    @id @default(autoincrement())
+  publicId                   String    @unique @map("public_id")
+  userId                     BigInt    @map("user_id")
+  deedActionId               BigInt?   @map("deed_action_id")
+  soundscapeId               BigInt?   @map("soundscape_id")
+  targetDurationSeconds      Int       @default(20) @map("target_duration_seconds")
+  elapsedSeconds             Int       @default(0) @map("elapsed_seconds")
+  completionThresholdPercent Int       @default(100) @map("completion_threshold_percent")
+  reducedMotion              Boolean   @default(false) @map("reduced_motion")
+  status                     String    @default("started")
+  completionIdempotencyKey   String?   @unique @map("completion_idempotency_key")
+  startedAt                  DateTime  @default(now()) @map("started_at") @db.Timestamptz(6)
+  completedAt                DateTime? @map("completed_at") @db.Timestamptz(6)
+  expiresAt                  DateTime  @map("expires_at") @db.Timestamptz(6)
+  metadata                   Json      @default("{}")
+
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deedAction    DeedAction?      @relation(fields: [deedActionId], references: [id], onDelete: SetNull)
+  soundscape    FocusSoundscape? @relation(fields: [soundscapeId], references: [id], onDelete: SetNull)
+  reflections   FocusReflection[]
+  karmaEvents   KarmaEvent[]
+
+  @@index([userId, startedAt])
+  @@index([deedActionId])
+  @@index([status, expiresAt])
+  @@map("focus_sessions")
+}
+
+model FocusReflection {
+  id             BigInt    @id @default(autoincrement())
+  publicId       String    @unique @map("public_id")
+  userId         BigInt    @map("user_id")
+  focusSessionId BigInt    @map("focus_session_id")
+  mood           String
+  body           String?
+  visibility     String    @default("private")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt      DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  focusSession FocusSession @relation(fields: [focusSessionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([focusSessionId])
+  @@map("focus_reflections")
 }
 
 model JournalEntry {

@@ -11,6 +11,7 @@ Foobow targets Node `20.19.4`.
 The repository records this in:
 
 - `.node-version`
+- `.nvmrc`
 - Root `package.json` engines
 - `apps/api/package.json` engines
 - `apps/mobile/package.json` engines
@@ -27,6 +28,7 @@ The Codex bundled runtime at `C:\Users\crane\.cache\codex-runtimes\codex-primary
 Use one of these approaches:
 
 - nvm-windows: install and use `20.19.4`.
+- nvm-compatible shells: run `nvm use` from the repo root, which reads `.nvmrc`.
 - Volta: pin Node `20.19.4` if adopted later.
 - GitHub Actions: already uses `20.19.4`.
 

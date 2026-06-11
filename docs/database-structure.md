@@ -77,6 +77,45 @@ Use `bigint generated always as identity` for internal primary keys. Expose stab
 - `completed_at`
 - `metadata`
 
+### focus_soundscapes
+
+- `id`
+- `slug`
+- `name`
+- `category`
+- `description`
+- `status`
+
+### focus_sessions
+
+- `id`
+- `public_id`
+- `user_id`
+- `deed_action_id`
+- `soundscape_id`
+- `target_duration_seconds`
+- `elapsed_seconds`
+- `completion_threshold_percent`
+- `reduced_motion`
+- `status`
+- `completion_idempotency_key`
+- `started_at`
+- `completed_at`
+- `expires_at`
+- `metadata`
+
+### focus_reflections
+
+- `id`
+- `public_id`
+- `user_id`
+- `focus_session_id`
+- `mood`
+- `body`
+- `visibility`
+- `created_at`
+- `deleted_at`
+
 ### karma_events
 
 - `id`
@@ -212,6 +251,8 @@ Use `bigint generated always as identity` for internal primary keys. Expose stab
 - `moderation_status`: visible, reported, reviewing, hidden, removed, dismissed.
 - `verification_status`: unverified, pending_review, verified, rejected.
 - `deed_action.status`: started, completed, journaled, shared.
+- `focus_session.status`: started, completed, abandoned, expired.
+- `focus_reflection.mood`: calm, lighter, same, heavy, grateful, hopeful.
 - `donation.payment_status`: pending, completed, failed, refunded.
 - `subscription.status`: trial, active, past_due, canceled.
 
@@ -220,6 +261,8 @@ Use `bigint generated always as identity` for internal primary keys. Expose stab
 - Journal entries are private by default.
 - Blessings can be anonymous but must still be linked to an internal user for abuse prevention.
 - Karma events are symbolic and must not be purchasable.
+- Focus-session karma is awarded only when a server-side duration threshold is met and must be idempotent.
+- Focus reflections are private by default and must be handled like journal entries for export/delete flows.
 - A verified donation campaign must have `verification_status = verified` before accepting payments.
 - Donation records must support receipts and refunds.
 - Quiet ranking mode must exclude user identity from public ranking surfaces.
@@ -230,7 +273,12 @@ Use `bigint generated always as identity` for internal primary keys. Expose stab
 - `mood_checkins.user_id`, `deed_actions.user_id`, `karma_events.user_id`, `journal_entries.user_id`, `blessings.author_user_id`, `donations.user_id`, `user_badges.user_id`, `group_memberships.user_id`, and `subscriptions.user_id` reference `users.id`.
 - `deed_actions.deed_type_id` references `deed_types.id`.
 - `deed_actions.map_spot_id` references `map_spots.id`.
+- `focus_sessions.user_id` references `users.id`.
+- `focus_sessions.deed_action_id` references `deed_actions.id`.
+- `focus_sessions.soundscape_id` references `focus_soundscapes.id`.
+- `focus_reflections.focus_session_id` references `focus_sessions.id`.
 - `karma_events.deed_action_id` references `deed_actions.id`.
+- `karma_events.focus_session_id` references `focus_sessions.id`.
 - `journal_entries.deed_action_id` references `deed_actions.id`.
 - `blessing_reactions.blessing_id` references `blessings.id`.
 - `donations.campaign_id` references `donation_campaigns.id`.
@@ -244,7 +292,10 @@ Use `bigint generated always as identity` for internal primary keys. Expose stab
 - `mood_checkins`: unique `(user_id, checked_in_on)` and index on `(user_id, checked_in_on desc)`.
 - `map_spots`: index on `(category, status)` and geospatial index on location when PostGIS is introduced.
 - `deed_actions`: indexes on `(user_id, completed_at desc)`, `(deed_type_id, completed_at desc)`, and `(map_spot_id, completed_at desc)`.
+- `focus_sessions`: indexes on `(user_id, started_at desc)`, `deed_action_id`, and `(status, expires_at)`.
+- `focus_reflections`: indexes on `(user_id, created_at desc)` and `focus_session_id`.
 - `karma_events`: index on `(user_id, created_at desc)`.
+- `karma_events`: unique partial index on `(source_type, source_public_id)` for idempotent focus-session completion.
 - `journal_entries`: index on `(user_id, created_at desc)` with private visibility enforced in access policy.
 - `blessings`: partial index on `(created_at desc)` where `moderation_status = 'visible'`.
 - `donation_campaigns`: partial index on `(status, starts_at, ends_at)` where `verification_status = 'verified'`.
@@ -262,6 +313,7 @@ Use `bigint generated always as identity` for internal primary keys. Expose stab
 ## Migration Strategy
 
 - First migration draft: [`database/migrations/0001_initial.sql`](../database/migrations/0001_initial.sql).
+- Focus session migration draft: [`database/migrations/0002_focus_sessions.sql`](../database/migrations/0002_focus_sessions.sql).
 - First seed draft: [`database/seeds/0001_reference_data.sql`](../database/seeds/0001_reference_data.sql).
 - Every schema change must have a forward migration and a rollback note.
 - Add nullable columns first, backfill, then enforce `not null` constraints.

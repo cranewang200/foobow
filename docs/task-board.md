@@ -68,14 +68,17 @@
 - Add sprint audit and next-plan notes based on current repo status and the public meditation reference page.
 - Add Calm Ritual feature spec for optional ambient focus sessions around symbolic good deeds.
 - Prototype the Calm Ritual flow in the static prototype and Expo shell: optional soundscape, focus timer, guided steps, accessible completion, quiet progress, and reduced-motion-safe copy.
+- Add focus-session API/database draft: OpenAPI paths, SQL migration, Prisma models, idempotent completion, private reflections, and contract tests.
+- Add provider CLI setup plan for Supabase, Clerk, Mapbox, optional Stripe, and provider-backed PA gates.
+- Add `.nvmrc` so nvm-compatible shells standardize Node on `20.19.4`.
 
 ## Next
 
-- Upgrade default local Node to `20.19.4+` or consistently run Prisma commands with bundled Node `24.14.0`.
+- Upgrade default local Node to `20.19.4+`; until then, continue running Prisma commands with bundled Node `24.14.0`.
 - Add production authentication provider once account/session requirements and credentials are selected.
 - Use CLI to create development resources after user provides provider account inputs: Supabase org/region/password, Clerk app access, Mapbox account, and optional Stripe mode if donation checkout should be tested now.
-- Add API contract and database draft support for focus sessions after provider setup and Node runtime are stable.
 - Keep assigning planning/review tasks to Claude/Gemini while Codex is above 80%, record timeout/429 failures as orchestration blockers, and validate their outputs before integration.
+- Run provider-backed PA once Clerk, Supabase/Postgres, and Mapbox values are available and wired.
 - Expand the API DB integration suite toward isolated throwaway schemas or databases for parallel CI jobs.
 - Monitor Expo SDK 56 and Prisma CLI 7 moderate transitive audit advisories for safe upstream fixes without force-downgrading the stack.
 

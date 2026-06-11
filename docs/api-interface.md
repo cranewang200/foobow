@@ -100,6 +100,24 @@ Collection endpoints use cursor pagination:
 - `GET /deed-actions/me`
   - Purpose: return personal deed history and impact map.
 
+## Focus Sessions
+
+- `POST /focus-sessions`
+  - Purpose: start an optional Calm Ritual focus session before or after a symbolic deed.
+  - Request: `{ "deed_action_id": "deed_action_123", "soundscape_id": "water", "target_duration_seconds": 20, "reduced_motion": false }`
+  - Response: `{ "focus_session": { "id": "focus_123", "status": "started", "completion_threshold_percent": 100 } }`
+- `PATCH /focus-sessions/{id}`
+  - Purpose: update elapsed focus time or mark an abandoned/expired session.
+  - Request: `{ "elapsed_seconds": 20, "status": "started" }`
+  - Response: `{ "focus_session": { "id": "focus_123", "elapsed_seconds": 20, "ready_to_complete": true } }`
+- `POST /focus-sessions/{id}/complete`
+  - Purpose: complete a focus session and idempotently award symbolic karma when the server-side threshold is met.
+  - Headers: `Idempotency-Key: client-generated-unique-key`
+  - Request: `{ "elapsed_seconds": 20, "reflection_mood": "lighter", "reflection_body": "optional private note" }`
+  - Response: `{ "focus_session": {}, "karma_event": {}, "reflection": {} }`
+- `GET /focus-sessions/{id}`
+  - Purpose: return an owner-only focus session record. Private reflections are never returned to other users.
+
 ## Gamification
 
 - `GET /karma/me`
@@ -161,6 +179,9 @@ Collection endpoints use cursor pagination:
 - Karma points cannot be purchased through donation or subscription APIs.
 - Moderation status must be checked before community content is returned.
 - Donation creation must be idempotent by `Idempotency-Key`.
+- Focus-session completion must be idempotent by `Idempotency-Key` and must not double-award karma on retry.
+- Focus-session reflections are private journal-like data and must never appear in public feeds, rankings, or social APIs.
+- Focus-session completion thresholds are evaluated server-side from elapsed duration, not trusted from a client `completed` flag.
 - Webhooks from a future payment provider must verify signatures before updating payment status.
 - List endpoints must use cursor pagination, not unbounded arrays.
 - Public IDs should be opaque and must not reveal user count or sequence position.

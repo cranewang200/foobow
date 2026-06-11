@@ -38,6 +38,7 @@ test("ODD, database, API, project plan, task board, and memory docs exist in REA
     "Plugin And AI Orchestration",
     "Shared Catalog Contract",
     "External Service Resources",
+    "Provider CLI Setup Plan",
     "Dependency Advisory Watchlist",
     "Memory"
   ]);
@@ -123,9 +124,10 @@ test("shared catalog contract protects cross-surface product sample data", async
 test("external service env contract covers production resource setup", async () => {
   const envExample = await readText(".env.example");
   const serviceDocs = await readText("docs/external-service-resources.md");
+  const providerPlan = await readText("docs/provider-cli-setup-plan.md");
   const packageJson = await readText("package.json");
 
-  const missing = hasAll(envExample + serviceDocs + packageJson, [
+  const missing = hasAll(envExample + serviceDocs + providerPlan + packageJson, [
     "test:env",
     "verify-env-contract.mjs",
     "Clerk",
@@ -138,7 +140,10 @@ test("external service env contract covers production resource setup", async () 
     "DATABASE_URL",
     "FOOBOW_DEV_BEARER_TOKEN",
     "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY",
-    "EXPO_PUBLIC_MAPBOX_TOKEN"
+    "EXPO_PUBLIC_MAPBOX_TOKEN",
+    "supabase projects list",
+    "Provider-backed PA",
+    "Stripe CLI becomes useful once webhook verification exists"
   ]);
 
   assert.deepEqual(missing, []);
@@ -153,9 +158,10 @@ test("sprint readiness docs cover auth, maps, localization, mobile release, and 
   const release = await readText("docs/mobile-release-checklist.md");
   const nodeReadiness = await readText("docs/node-readiness.md");
   const nodeVersion = await readText(".node-version");
+  const nvmrc = await readText(".nvmrc");
   const apiPackage = await readText("apps/api/package.json");
 
-  const missing = hasAll(auth + envExample + compose + maps + localization + release + nodeReadiness + nodeVersion + apiPackage, [
+  const missing = hasAll(auth + envExample + compose + maps + localization + release + nodeReadiness + nodeVersion + nvmrc + apiPackage, [
     "Auth0",
     "Clerk",
     "Apple Sign In",

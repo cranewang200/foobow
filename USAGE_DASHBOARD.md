@@ -1,14 +1,14 @@
 # Foobow AI Team Usage Dashboard
 
-Last updated: 2026-06-11 11:55 America/Toronto
+Last updated: 2026-06-11 12:55 America/Toronto
 
 ## Current Load
 
 | Agent | 5h Window Used | Weekly Used | Requests Today | Est. Tokens In/Out | Load % | Last Task |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Codex 5.5 | ~306 min | Unknown | 49 | ~256k in / ~66k out | 99% | Integrated Calm Ritual into static prototype and Expo shell |
-| Claude 4.8 | ~10 min | Unknown | 8 | ~6k in / ~3k out | 12% | Health check passed; provided non-secret sprint-priority review |
-| Gemini 3.5 | ~9 min | Unknown | 7 | ~10k in / ~4k out | 14% | Health check passed with elevation; provided non-secret product/QA suggestions |
+| Codex 5.5 | ~306 min | Unknown | 50 | ~261k in / ~68k out | 99% | Integrated focus-session draft, provider setup plan, Node standardization marker, and verification |
+| Claude 4.8 | ~11 min | Unknown | 9 | ~7k in / ~3k out | 14% | Reviewed non-secret focus-session API/database draft scope |
+| Gemini 3.5 | ~10 min | Unknown | 8 | ~11k in / ~4k out | 16% | Reviewed non-secret provider, Node, and PA sequencing |
 
 ## Assignment Rules
 
@@ -73,3 +73,7 @@ Last updated: 2026-06-11 11:55 America/Toronto
 - Latest external AI assignments: Claude reviewed sprint priorities and recommended provider setup, Node standardization, Calm Ritual spec-first work, agent health checks, and decoupled API contract tasks. Gemini reviewed meditation-inspired product QA and recommended adaptive soundscapes, intentionality timer, hold-to-complete, gentle ripple animation, and private reflection.
 - Latest local gate: `npm test` passed with 23/23 tests after adding `AGENTS.md`, sprint audit notes, and Calm Ritual feature planning.
 - Latest heartbeat sprint task: Calm Ritual is now visible in the static prototype and Expo shell with soundscape choices, focus progress, guided steps, accessible completion controls, quiet progress copy, and safety language separating symbolic comfort from guaranteed outcomes.
+- Latest external AI assignments: Claude recommended focus session tables/endpoints, server-side thresholds, idempotent karma, and private reflections. Gemini recommended Node standardization first, then provider credentials, then provider-backed PA, with Stripe deferred.
+- Latest sprint task: Focus-session API/database draft added through OpenAPI, `database/migrations/0002_focus_sessions.sql`, Prisma models, docs, and tests. Provider CLI setup plan and `.nvmrc` were added. Prisma generate passed when run through bundled Node 24; default local Node `20.17.0` remains below project baseline.
+- Latest local gates: `npm test` passed with 25/25 tests; `npm run test:api`, `npm run test:env`, and `npm run test:advisories` passed elevated after sandbox EPERM; `database/migrations/0002_focus_sessions.sql` applied cleanly to local `foobow-postgres`; `npm --prefix apps/api run test:db-integration` passed against local Postgres.
+- Provider-backed PA status: not runnable yet because real Clerk, Supabase/Postgres connection values, and Mapbox token are not configured. Current browser PA remains valid for prototype flows, but authenticated provider-backed PA is blocked on credentials.

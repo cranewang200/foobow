@@ -129,6 +129,103 @@
         }
       }
     },
+    "/focus-sessions": {
+      "post": {
+        "summary": "Start a Calm Ritual focus session",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FocusSessionCreateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Focus session started",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FocusSessionResponse" }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/focus-sessions/{id}": {
+      "get": {
+        "summary": "Get an owner-only focus session",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/PathId" }],
+        "responses": {
+          "200": {
+            "description": "Focus session",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FocusSessionResponse" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "patch": {
+        "summary": "Update focus session elapsed time",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/PathId" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FocusSessionUpdateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Focus session updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FocusSessionResponse" }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/focus-sessions/{id}/complete": {
+      "post": {
+        "summary": "Complete a focus session and idempotently award symbolic karma",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PathId" },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FocusSessionCompleteRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Focus session completed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FocusSessionCompleteResponse" }
+              }
+            }
+          },
+          "409": { "$ref": "#/components/responses/IdempotencyConflict" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
     "/blessings": {
       "get": {
         "summary": "List moderated blessing wall posts",
@@ -225,6 +322,12 @@
         "in": "query",
         "schema": { "type": "string" }
       },
+      "PathId": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      },
       "IdempotencyKey": {
         "name": "Idempotency-Key",
         "in": "header",
@@ -250,6 +353,9 @@
       },
       "Conflict": {
         "description": "Resource conflict"
+      },
+      "NotFound": {
+        "description": "Resource not found"
       },
       "RateLimited": {
         "description": "Rate limit exceeded"
@@ -317,6 +423,61 @@
           "visibility": { "type": "string", "enum": ["anonymous", "public", "private"] }
         }
       },
+      "FocusSessionCreateRequest": {
+        "type": "object",
+        "required": ["target_duration_seconds"],
+        "properties": {
+          "deed_action_id": { "type": "string" },
+          "soundscape_id": { "type": "string", "enum": ["water", "rain", "forest", "street", "silence"] },
+          "target_duration_seconds": { "type": "integer", "minimum": 5, "maximum": 1800 },
+          "completion_threshold_percent": { "type": "integer", "minimum": 50, "maximum": 100, "default": 100 },
+          "reduced_motion": { "type": "boolean", "default": false }
+        }
+      },
+      "FocusSessionUpdateRequest": {
+        "type": "object",
+        "required": ["elapsed_seconds"],
+        "properties": {
+          "elapsed_seconds": { "type": "integer", "minimum": 0 },
+          "status": { "type": "string", "enum": ["started", "abandoned", "expired"] }
+        }
+      },
+      "FocusSessionCompleteRequest": {
+        "type": "object",
+        "required": ["elapsed_seconds"],
+        "properties": {
+          "elapsed_seconds": { "type": "integer", "minimum": 0 },
+          "reflection_mood": { "type": "string", "enum": ["calm", "lighter", "same", "heavy", "grateful", "hopeful"] },
+          "reflection_body": { "type": "string", "maxLength": 500 }
+        }
+      },
+      "FocusSessionResponse": {
+        "type": "object",
+        "required": ["focus_session"],
+        "properties": {
+          "focus_session": {
+            "type": "object",
+            "required": ["id", "status", "elapsed_seconds", "target_duration_seconds", "completion_threshold_percent", "ready_to_complete"],
+            "properties": {
+              "id": { "type": "string" },
+              "status": { "type": "string", "enum": ["started", "completed", "abandoned", "expired"] },
+              "elapsed_seconds": { "type": "integer" },
+              "target_duration_seconds": { "type": "integer" },
+              "completion_threshold_percent": { "type": "integer" },
+              "ready_to_complete": { "type": "boolean" }
+            }
+          }
+        }
+      },
+      "FocusSessionCompleteResponse": {
+        "type": "object",
+        "required": ["focus_session", "karma_event"],
+        "properties": {
+          "focus_session": { "type": "object" },
+          "karma_event": { "type": "object" },
+          "reflection": { "type": ["object", "null"] }
+        }
+      },
       "ReportCreateRequest": {
         "type": "object",
         "required": ["target_type", "target_id", "reason"],
@@ -370,4 +531,3 @@
     }
   }
 }
-

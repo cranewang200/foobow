@@ -17,6 +17,9 @@ test("OpenAPI contract defines core MVP resources", async () => {
       "/map-spots",
       "/deed-types",
       "/deed-actions",
+      "/focus-sessions",
+      "/focus-sessions/{id}",
+      "/focus-sessions/{id}/complete",
       "/blessings",
       "/reports",
       "/donation-campaigns",
@@ -24,6 +27,23 @@ test("OpenAPI contract defines core MVP resources", async () => {
     ].filter((path) => !paths.includes(path)),
     []
   );
+});
+
+test("OpenAPI focus sessions define idempotent completion and private reflection shape", async () => {
+  const contract = JSON.parse(await readText("docs/openapi.json"));
+
+  assert.equal(contract.paths["/focus-sessions/{id}/complete"].post.parameters[1].$ref, "#/components/parameters/IdempotencyKey");
+  assert.ok(contract.components.schemas.FocusSessionCreateRequest);
+  assert.ok(contract.components.schemas.FocusSessionCompleteRequest);
+  assert.ok(contract.components.schemas.FocusSessionCompleteResponse);
+  assert.deepEqual(contract.components.schemas.FocusSessionCompleteRequest.properties.reflection_mood.enum, [
+    "calm",
+    "lighter",
+    "same",
+    "heavy",
+    "grateful",
+    "hopeful"
+  ]);
 });
 
 test("OpenAPI donation creation requires idempotency and unverified-campaign handling", async () => {
@@ -45,4 +65,3 @@ test("OpenAPI lists use cursor pagination shape", async () => {
   assert.ok(contract.paths["/map-spots"].get.parameters.some((parameter) => parameter.$ref === "#/components/parameters/Cursor"));
   assert.ok(contract.paths["/deed-types"].get.parameters.some((parameter) => parameter.$ref === "#/components/parameters/Cursor"));
 });
-
